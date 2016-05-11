@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="10.0.0.7"
+    android:id="@+id/ip_text"
+    />
+    <EditText
+    android:inputType = "number"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="5005"
+    android:id="@+id/port_text"
+    />
+    <EditText
+    android:inputType = "number"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="200"
+    android:id="@+id/size_text"
+    />
+    <SeekBar
+        android:id="@+id/size_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:max="10000"
+        android:progress="100"/>
+    <EditText
+    android:inputType = "number"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="2"
+    android:id="@+id/rate_text"
+    />
+<Button
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Hello World, MainActivity"
+    android:id="@+id/start_button"
+    />
+</LinearLayout>
+
