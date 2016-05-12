@@ -27,7 +27,7 @@ public class Sender implements Runnable {
         mspp = ms;
         dataSize = size;
         mContext = cont;
-        run();
+        //run();
     }
     public void run() {
         // TODO Auto-generated method stub
