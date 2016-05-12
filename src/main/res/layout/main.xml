@@ -31,6 +31,11 @@
     android:text="2"
     android:id="@+id/rate_text"
     />
+    <CheckBox
+        android:id="@+id/check_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keep screen on?" />
 <Button
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
