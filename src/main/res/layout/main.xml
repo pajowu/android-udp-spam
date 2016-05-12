@@ -17,13 +17,6 @@
     android:text="5005"
     android:id="@+id/port_text"
     />
-    <EditText
-    android:inputType = "number"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="200"
-    android:id="@+id/size_text"
-    />
     <SeekBar
         android:id="@+id/size_bar"
         android:layout_width="fill_parent"
@@ -41,7 +34,7 @@
 <Button
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:text="Hello World, MainActivity"
+    android:text="Start spamming"
     android:id="@+id/start_button"
     />
 </LinearLayout>
