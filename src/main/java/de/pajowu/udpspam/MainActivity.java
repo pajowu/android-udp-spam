@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import android.content.Context;
 
 public class MainActivity extends Activity
 {
@@ -25,6 +26,7 @@ public class MainActivity extends Activity
 	    etPort = (EditText) findViewById(R.id.port_text);
 	    barSize = (SeekBar) findViewById(R.id.size_bar);
 	    etRate = (EditText) findViewById(R.id.rate_text);
+	    final Context cont = this;
 	    barSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
 				size = progress;
@@ -42,7 +44,7 @@ public class MainActivity extends Activity
 				int po = Integer.parseInt(etPort.getText().toString());
 				int rate = Integer.parseInt(etRate.getText().toString());
 				long ms = 1000/rate;
-	            Thread t = new Thread(new Sender(ms, add, po, size));
+	            Thread t = new Thread(new Sender(ms, add, po, size, cont));
 	            t.start();
 	        }
 	    });

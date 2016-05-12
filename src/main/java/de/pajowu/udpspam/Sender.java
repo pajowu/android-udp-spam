@@ -6,6 +6,9 @@ import java.net.DatagramPacket;
 import android.util.Log;
 import java.lang.System;
 import java.util.Random;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.content.Context;
 
 public class Sender implements Runnable {
     // ms = ms per packet
@@ -15,13 +18,15 @@ public class Sender implements Runnable {
     Boolean allOK = true;
     Random rand;
     int dataSize;
-    Sender(long ms, String add, int po, int size)
+    Context mContext;
+    Sender(long ms, String add, int po, int size, Context cont)
     {
         rand = new Random();
         addr = add;
         port = po;
         mspp = ms;
         dataSize = size;
+        mContext = cont;
         run();
     }
     public void run() {
@@ -30,6 +35,9 @@ public class Sender implements Runnable {
         long time;
         long sleep;
         byte[] message = new byte[dataSize];
+        PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Migration");
+        wakeLock.acquire();
         while (allOK) {
             start = System.currentTimeMillis();
             try {
@@ -60,6 +68,6 @@ public class Sender implements Runnable {
                 allOK = false;
             }
         }
-        
+        wakeLock.release();
     }
 }
