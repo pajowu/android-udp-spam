@@ -9,6 +9,7 @@ import java.util.Random;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.content.Context;
+import android.widget.Button;
 
 public class Sender implements Runnable {
     // ms = ms per packet
@@ -19,7 +20,10 @@ public class Sender implements Runnable {
     Random rand;
     int dataSize;
     Context mContext;
-    Sender(long ms, String add, int po, int size, Context cont)
+    DatagramSocket s;
+    InetAddress local;
+    Button startBtn;
+    Sender(long ms, String add, int po, int size, Context cont, Button btn)
     {
         rand = new Random();
         addr = add;
@@ -27,6 +31,7 @@ public class Sender implements Runnable {
         mspp = ms;
         dataSize = size;
         mContext = cont;
+        startBtn = btn;
         //run();
     }
     public void run() {
@@ -38,14 +43,18 @@ public class Sender implements Runnable {
         PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Migration");
         wakeLock.acquire();
-        while (allOK) {
+        setButton(false);
+        try {
+            s = new DatagramSocket();
+            s.setReceiveBufferSize(10240);
+            local = InetAddress.getByName(addr);
+        } catch (Exception e) {
+            Log.d("UDPSPAM", "Exception", e);
+        }
+
+        while (allOK && s != null && local != null) {
             start = System.currentTimeMillis();
             try {
-
-                String messageStr = "Hello Android!";
-                DatagramSocket s = new DatagramSocket();
-                s.setReceiveBufferSize(10240);
-                InetAddress local = InetAddress.getByName(addr);
                 rand.nextBytes(message);
                 DatagramPacket p = new DatagramPacket(message, dataSize, local,
                         port);
@@ -68,6 +77,15 @@ public class Sender implements Runnable {
                 allOK = false;
             }
         }
+        setButton(true);
         wakeLock.release();
+    }
+    private void setButton(final Boolean state) {
+        ((MainActivity)mContext).runOnUiThread( new Runnable() {
+            @Override
+            public void run() {
+                startBtn.setEnabled(state);
+            }
+        });
     }
 }

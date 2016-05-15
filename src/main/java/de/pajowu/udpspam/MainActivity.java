@@ -22,13 +22,14 @@ public class MainActivity extends Activity
 	CheckBox cbScreen;
 	Window mWindow;
 	Context cont;
+	Button b;
 	int size = 100;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-	    Button b = (Button) findViewById(R.id.start_button);
+	    b = (Button) findViewById(R.id.start_button);
 	    etAddr = (EditText) findViewById(R.id.ip_text);
 	    etPort = (EditText) findViewById(R.id.port_text);
 	    barSize = (SeekBar) findViewById(R.id.size_bar);
@@ -58,7 +59,7 @@ public class MainActivity extends Activity
 				if (kso) {
 					mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 				}
-	            Thread t = new Thread(new Sender(ms, add, po, size, cont));
+	            Thread t = new Thread(new Sender(ms, add, po, size, cont, b));
 	            t.start();
 	        }
 	    });
