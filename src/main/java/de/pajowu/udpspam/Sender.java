@@ -23,6 +23,9 @@ public class Sender implements Runnable {
     InetAddress local;
     Button startBtn;
     Boolean safe;
+    Integer package_num = 0;
+    PowerManager powerManager;
+    WakeLock wakeLock;
     Sender(long ms, String add, int po, int size, Context cont, Button btn, Boolean sa)
     {
         rand = new Random();
@@ -40,9 +43,6 @@ public class Sender implements Runnable {
         long time;
         long sleep;
         byte[] message = new byte[dataSize];
-        PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-        WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Migration");
-        wakeLock.acquire();
         setButton(false);
         try {
             s = new DatagramSocket();
@@ -53,6 +53,15 @@ public class Sender implements Runnable {
         }
 
         while (s != null && local != null) {
+            if (package_num % 500 == 0) {
+                package_num = 1;
+                if (wakeLock != null && wakeLock.isHeld()) {
+                    wakeLock.release();
+                }
+                powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SND");
+                wakeLock.acquire();
+            }
             start = System.currentTimeMillis();
             try {
                 rand.nextBytes(message);
@@ -83,6 +92,7 @@ public class Sender implements Runnable {
                 }
             }
         }
+        package_num += 1;
         setButton(true);
         wakeLock.release();
     }
