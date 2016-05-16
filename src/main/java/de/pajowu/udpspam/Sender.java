@@ -61,7 +61,6 @@ public class Sender implements Runnable {
                 s.send(p);
             } catch (Exception e) {
                 Log.d("UDPSPAM", "Exception", e);
-                allOK = false;
             }
             time = System.currentTimeMillis() - start;
             sleep = mspp - time;
