@@ -12,6 +12,10 @@ import android.widget.CheckBox;
 import android.view.WindowManager;
 import android.util.Log;
 import android.view.Window;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import android.os.Handler;
 
 public class MainActivity extends Activity
 {
@@ -24,6 +28,9 @@ public class MainActivity extends Activity
 	Context cont;
 	Button b;
 	int size = 100;
+	DatagramSocket s;
+	InetAddress local;
+	DatagramPacket pack;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -59,7 +66,16 @@ public class MainActivity extends Activity
 				if (kso) {
 					mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 				}
-	            Thread t = new Thread(new Sender(ms, add, po, size, cont, b, false));
+				Handler hnd = new Handler();
+				try {
+					s = new DatagramSocket();
+		            s.setReceiveBufferSize(10240);
+		            local = InetAddress.getByName(add);
+		            pack = new DatagramPacket(new byte[size], size, local, po);
+		        } catch (Exception e) {
+		            Log.d("UDPSPAM", "Exception", e);
+		        }
+	            Thread t = new Thread(new Sender(ms, s, hnd, pack));
 	            t.start();
 	        }
 	    });
