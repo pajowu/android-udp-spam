@@ -61,6 +61,7 @@ public class Sender implements Runnable {
                 powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
                 wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SND");
                 wakeLock.acquire();
+                Log.d("UDPSPAM", "NEW WAKELOCK");
             }
             start = System.currentTimeMillis();
             try {
@@ -91,8 +92,8 @@ public class Sender implements Runnable {
                     break;
                 }
             }
+            package_num += 1;
         }
-        package_num += 1;
         setButton(true);
         wakeLock.release();
     }
