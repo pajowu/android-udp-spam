@@ -59,7 +59,7 @@ public class MainActivity extends Activity
 				if (kso) {
 					mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 				}
-	            Thread t = new Thread(new Sender(ms, add, po, size, cont, b));
+	            Thread t = new Thread(new Sender(ms, add, po, size, cont, b, false));
 	            t.start();
 	        }
 	    });

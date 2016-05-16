@@ -16,14 +16,14 @@ public class Sender implements Runnable {
     long mspp;
     int port = 5005;
     String addr = "10.0.0.7";
-    Boolean allOK = true;
     Random rand;
     int dataSize;
     Context mContext;
     DatagramSocket s;
     InetAddress local;
     Button startBtn;
-    Sender(long ms, String add, int po, int size, Context cont, Button btn)
+    Boolean safe;
+    Sender(long ms, String add, int po, int size, Context cont, Button btn, Boolean sa)
     {
         rand = new Random();
         addr = add;
@@ -32,7 +32,7 @@ public class Sender implements Runnable {
         dataSize = size;
         mContext = cont;
         startBtn = btn;
-        //run();
+        safe = sa;
     }
     public void run() {
         // TODO Auto-generated method stub
@@ -52,7 +52,7 @@ public class Sender implements Runnable {
             Log.d("UDPSPAM", "Exception", e);
         }
 
-        while (allOK && s != null && local != null) {
+        while (s != null && local != null) {
             start = System.currentTimeMillis();
             try {
                 rand.nextBytes(message);
@@ -61,6 +61,9 @@ public class Sender implements Runnable {
                 s.send(p);
             } catch (Exception e) {
                 Log.d("UDPSPAM", "Exception", e);
+                if (safe) {
+                    break;
+                }
             }
             time = System.currentTimeMillis() - start;
             sleep = mspp - time;
@@ -69,11 +72,15 @@ public class Sender implements Runnable {
                     Thread.sleep(sleep);
                 } catch (Exception e) {
                     Log.d("UDPSPAM", "Exception", e);
-                    allOK = false;
+                    if (safe) {
+                        break;
+                    }
                 }
             } else {
                 Log.d("UDPSPAM", "HALP! Can't send enough packages");
-                allOK = false;
+                if (safe) {
+                    break;
+                }
             }
         }
         setButton(true);
